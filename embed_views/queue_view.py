@@ -1,6 +1,7 @@
-import discord
 import math
-from management.vip_users import VIPUsers
+
+import discord
+
 
 class QueueView(discord.ui.View):
     def __init__(self, queue, bot, author, timeout=60):
@@ -22,7 +23,7 @@ class QueueView(discord.ui.View):
 
         embed = discord.Embed(
             title=f"Queue (Page {self.page + 1}/{self.max_pages})",
-            color=0xa600ff,
+            color=0xA600FF,
         )
         embed.set_thumbnail(url=self.bot.user.avatar.url)
         for i, song in enumerate(songs, start=start):
@@ -35,7 +36,7 @@ class QueueView(discord.ui.View):
                 embed = discord.Embed(
                     title="Queue",
                     description="No songs in the queue.",
-                    color=0xa600ff,
+                    color=0xA600FF,
                 )
                 embed.set_thumbnail(url=self.bot.user.avatar.url)
                 await self.queueMessage.resource.edit(embed=embed, view=None)
@@ -62,10 +63,7 @@ class QueueView(discord.ui.View):
 
         start = self.page * 25 + 1
         end = start + 25
-        options = [
-            discord.SelectOption(label=song.title, value=str(i))
-            for i, song in enumerate(self.queue[start:end], start=start)
-        ]
+        options = [discord.SelectOption(label=song.title, value=str(i)) for i, song in enumerate(self.queue[start:end], start=start)]
 
         class RemoveDropdown(discord.ui.Select):
             def __init__(self, parent_view):
@@ -74,18 +72,10 @@ class QueueView(discord.ui.View):
 
             async def callback(self, select_interaction: discord.Interaction):
                 index = int(self.values[0])
-                songUser = self.parent_view.queue[index].user
-
-                # check if user is an admin
-                vipUsersClass = VIPUsers()
-                vipUsers = await vipUsersClass.loadVIPUserIDs()
-                if select_interaction.user.id in vipUsers or select_interaction.user.id == songUser.id:
-                    removed_song = self.parent_view.queue.pop(index)
-                    await self.parent_view.removeMessage.resource.delete()
-                    await select_interaction.response.send_message(f"Removed: {removed_song.title}", ephemeral=True)
-                    await self.parent_view.send_page(interaction)
-                else:
-                    await select_interaction.response.send_message(f"Can't remove a song that you didn't queue. Song was queued by: {songUser.display_name}", ephemeral=True)
+                removed_song = self.parent_view.queue.pop(index)
+                await self.parent_view.removeMessage.resource.delete()
+                await select_interaction.response.send_message(f"Removed: {removed_song.title}", ephemeral=True)
+                await self.parent_view.send_page(interaction)
 
         view = discord.ui.View()
         view.add_item(RemoveDropdown(self))
@@ -101,10 +91,7 @@ class QueueView(discord.ui.View):
         end = start + 25
         current_songs = self.queue[start:end]
 
-        options = [
-            discord.SelectOption(label=song.title, value=str(i))
-            for i, song in enumerate(current_songs, start=start)
-        ]
+        options = [discord.SelectOption(label=song.title, value=str(i)) for i, song in enumerate(current_songs, start=start)]
 
         class SelectSongToMove(discord.ui.Select):
             def __init__(self, parent_view):
@@ -118,12 +105,7 @@ class QueueView(discord.ui.View):
                     def __init__(self, parent_view):
                         super().__init__()
                         self.parent_view = parent_view
-                        self.position_input = discord.ui.TextInput(
-                            label="Enter the new position:",
-                            style=discord.TextStyle.short,
-                            required=True,
-                            max_length=3
-                        )
+                        self.position_input = discord.ui.TextInput(label="Enter the new position:", style=discord.TextStyle.short, required=True, max_length=3)
                         self.add_item(self.position_input)
 
                     async def on_submit(self, modal_interaction: discord.Interaction):
@@ -132,19 +114,12 @@ class QueueView(discord.ui.View):
                             if new_index < 1 or new_index >= len(self.parent_view.queue):
                                 raise ValueError("Invalid position: out of bounds or cannot move to index 0.")
                             from_index = self.parent_view.selected_song_index
-                            songUser = self.parent_view.queue[from_index].user
 
-                            # check if user is an admin
-                            vipUsersClass = VIPUsers()
-                            vipUsers = await vipUsersClass.loadVIPUserIDs()
-                            if modal_interaction.user.id in vipUsers or modal_interaction.user.id == songUser.id:
-                                song = self.parent_view.queue.pop(from_index)
-                                self.parent_view.queue.insert(new_index, song)
-                                await modal_interaction.response.send_message(f"Moved song to position {new_index}.", ephemeral=True)
-                                await self.parent_view.send_page(interaction)
-                                await self.parent_view.moveMessage.resource.delete()
-                            else:
-                                await modal_interaction.response.send_message(f"Can't move a song that you didn't queue. Song was queued by: {songUser.display_name}", ephemeral=True)
+                            song = self.parent_view.queue.pop(from_index)
+                            self.parent_view.queue.insert(new_index, song)
+                            await modal_interaction.response.send_message(f"Moved song to position {new_index}.", ephemeral=True)
+                            await self.parent_view.send_page(interaction)
+                            await self.parent_view.moveMessage.resource.delete()
                         except Exception as e:
                             await modal_interaction.response.send_message(f"Error: {e}", ephemeral=True)
 

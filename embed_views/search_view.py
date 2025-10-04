@@ -1,5 +1,6 @@
 import discord
 
+
 class SearchView(discord.ui.View):
     def __init__(self, songs, musicController, bot):
         super().__init__(timeout=None)
@@ -9,20 +10,17 @@ class SearchView(discord.ui.View):
 
     async def send_page(self, interaction: discord.Interaction):
         embed = discord.Embed(
-            title=f"Search Results:",
-            color=0xa600ff,
+            title="Search Results:",
+            color=0xA600FF,
         )
         embed.set_thumbnail(url=self.bot.user.avatar.url)
         for i, song in enumerate(self.songs, start=1):
-            embed.add_field(name=f"{i}", value=song['title'], inline=False)
-        
+            embed.add_field(name=f"{i}", value=song["title"], inline=False)
+
         class SongDropdown(discord.ui.Select):
             def __init__(self, parent_view):
                 self.parent_view = parent_view
-                options = [
-                    discord.SelectOption(label=f"{i+1}. {s['title']}", value=str(i))
-                    for i, s in enumerate(parent_view.songs)
-                ]
+                options = [discord.SelectOption(label=f"{i + 1}. {s['title']}", value=str(i)) for i, s in enumerate(parent_view.songs)]
                 super().__init__(placeholder="Select a song to queue...", options=options)
 
             async def callback(self, interaction: discord.Interaction):
@@ -39,7 +37,7 @@ class SearchView(discord.ui.View):
                         await self.parent_view.musicController.two_four_seven(interaction.user.voice.channel, interaction.channel)
 
                 await interaction.response.send_message(f"Adding **{song['title']}**", delete_after=5)
-                await self.parent_view.musicController.determineSongSource(interaction.user, song['link'])          
+                await self.parent_view.musicController.determineSongSource(interaction.user, song["link"])
 
         dropdown_view = discord.ui.View()
         dropdown_view.add_item(SongDropdown(self))

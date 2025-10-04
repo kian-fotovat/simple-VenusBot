@@ -1,21 +1,16 @@
 # 🎶 Venus Bot - A Voice Activated 24/7 Discord Music Bot
 
-Venus Bot is a simple, yet powerful and customizable Discord music bot built with `discord.py`, capable of playing songs or playlists from YouTube, Spotify, SoundCloud, and direct file uploads. Featuring multi-user voice recognition, customizable voice commands, 24/7 connection, audio transcription, keyword counters, an advanced queue system, and much more — Venus Bot will change the way you use voice channels in Discord forever!
+Venus Bot is a simple, yet powerful and customizable Discord music bot built with `discord.py`, capable of playing songs or playlists from YouTube, Spotify and SoundCloud. No fancy bullshit or e-kitten fluff, just a bot that plays music. Expect some minor bugs, I literally ripped everything I didn't want out, tested it for 10 minutes, and pushed it here.
+
+Created by [VenusMods](https://github.com/VenusMods) and slimmed by kian :)
 
 ---
 
 ## ✨ Features
 
-- 🎧 **Play Songs/Playlists** from YouTube, Spotify, SoundCloud, or uploaded files
+- 🎧 **Play Songs/Playlists** from YouTube, Spotify, or SoundCloud
 - 📜 **Smart Queue System** with paging, reordering, shuffle, and prioritization
-- 🔁 **Vote-Based Skipping** to democratically control what’s playing
 - 🎶 **Search and Select** songs directly from Discord using dropdowns
-- 🔍 **Dynamic Word Counters** with real-time tracking and keyword mapping
-- 🛠️ **Custom Voice Commands** — define how the bot listens and responds
-- 🧠 **Voice Recognition** to detect and attribute user commands in voice chat
-- 🗣️ **Audio Transcription** — turn voice into text with AI-based recognition
-- 🔐 **VIP/Admin System** for elevated permissions and command access
-- 💾 **Keyword Counters** to keep track of words said by your group
 - 🛠️ **Smart Connect** — allows the bot to join the channel when you join, or leaves when you leave
 ---
 
@@ -28,7 +23,6 @@ Venus Bot is a simple, yet powerful and customizable Discord music bot built wit
 > - ✅ You must have **[FFmpeg](https://ffmpeg.org/download.html)** installed and available in your system’s `PATH`
 > - ✅ You must use **Python 3.11** and create a virtual environment in the root directory
 > - ✅ You need to configure the `.env` file before running the bot
-> - ✅ You need to extract your cookies.txt and place it in the root folder.
 
 ---
 
@@ -59,7 +53,7 @@ OWNER=000000000000000000
 - OWNER should be your Discord user ID.
 > - To get it:
 > - Go to Discord Settings → Advanced → Enable Developer Mode
-> - Right-click your username → Click "Copy User ID"
+> - Click your username → Click "Copy User ID"
 
 ### 🤖 Run the Bot
 ```bash
@@ -68,33 +62,6 @@ python venusbot.py
 ```
 
 ---
-
-## 🗣️ Voice Related Commands and Info
-- This bot is able to hear all of the users in a voice channel. So in order to play or control the music, you don't have to use the slash commands, and instead you can your voice as a command.
-By default, "venus" is the keyword to activate this, and these are the available voice commands:
-```
-'venus play', 'venus skip', 'venus next', 'venus loop', 'venus pause', 'venus stop'
-```
-While "venus" is the default keyword to activate these commands, you can actually change this word to something else, or even to multiple keywords.
-### /keywords
-- This command will show all of the available keywords you can use as a voice command, from here you can also add or remove certain keywords.
-### Example Usage:
-
-![voiceplay](https://github.com/user-attachments/assets/1d329973-20cb-49b2-810d-21a483379741)
-
-- Since this bot can listen to the users in a voice channel, I also added the ability for it to keep track of certain words being said.
-### /counters
-With this command, you will be able to see all of the keywords and word counters. You can also add or remove keywords/counters from this menu. 
-- Counters are words that are being tracked.
-- Keywords are words that will track towards a counter. You can have multiple keywords point to a counter.
-### Example Usage:
-
-![unreal](https://github.com/user-attachments/assets/cfa44704-85d5-4cdf-aad8-31039724c2c7)
-
-### /transcribe
-This command allows you to transcribe the audio from all users in a voice channel to a specified text channel. If no channel is specified, it will turn off transcribing.
-
-![transcribe](https://github.com/user-attachments/assets/deb8b668-2875-4092-bd6e-7850f8905923)
 
 ### Smart Connect
 - While the bot is in 24/7 mode, the bot will join the channel when you join, or it will leave when it is the last one left in the channel.
@@ -123,23 +90,8 @@ Play a song/playlist from Youtube, Spotify, or SoundCloud.
 /play https://soundcloud.com/uiceheidd/scared-of-love?in=jason-the_god/sets/juice-wrld-playlist&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing
 ```
 
-### /playfile
-Plays the given attachment.
-
-### /lofi
-Plays a 24/7 lofi radio.
-
-### /lofijazz
-Plays a 24/7 lofi jazz radio.
-
-### /synthwave
-Plays a 24/7 synthwave radio.
-
 ### /loop
 Enables/Disables Looping on the current song.
-
-### /time
-Get the duration of the current song.
 
 ### /skip
 Skips the current song.
@@ -164,23 +116,5 @@ Shuffles the queue.
 ### /search
 Searches for top 10 results of a song. Use this in case you can't find what you want.
 
----
-
-## 🛠️ Management Commands - Admin Only
-### /ban
-Bans a user from using the bot.
-
-### /unban
-Unbans a user from the bot.
-
-### /majorvote
-Enables/Disables Majority Vote on Skipping or Stopping a Song.
-
-### /restart
-Restarts the bot.
-
-### /addadmin
-Makes the specified user an admin.
-
-### /removeadmin
-Removes admin from the specified user.
+### /volume
+Sets the volume of the bot, between 0 and 200. 100 is the default.

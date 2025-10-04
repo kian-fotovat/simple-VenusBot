@@ -196,10 +196,4 @@ cython_debug/
 # Venus bot
 cookies.txt
 bot_log.log
-README.md
-venv/
-__pycache__/
-management/banned_users_list.json
-management/bot_keywords.json
-management/vip_users_list.json
-management/word_counters.json
+discord bot permissions.png
