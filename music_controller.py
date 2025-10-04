@@ -521,4 +521,4 @@ class MusicController:
             color=0xA600FF,
         )
         embed.set_thumbnail(url=song.thumbnail)
-        await self.textChannel.send(embed=embed, view=MusicButtons(client=self.client))
+        await self.textChannel.send(embed=embed, view=MusicButtons(client=self.client, musicController=self))

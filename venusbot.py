@@ -109,13 +109,13 @@ async def play(interaction: discord.Interaction, query: str):
     if not musicController.isConnectedToVC():
         # check if user is in a voice channel
         if not interaction.user.voice or not interaction.user.voice.channel:
-            await interaction.response.send_message("You or the Bot must be in a voice channel to use this command.")
+            await interaction.response.send_message("You or the Bot must be in a voice channel to use this command.", ephemeral=True, delete_after=5)
             return
         else:
             await musicController.two_four_seven(interaction.user.voice.channel, interaction.channel)
 
     # send initial response
-    await interaction.response.send_message("Searching For Song...", delete_after=5)
+    await interaction.response.send_message(f"Searching For {query}...", ephemeral=True, delete_after=5)
 
     # send the query to determine where the song comes from
     await musicController.determineSongSource(interaction.user, query)
@@ -133,9 +133,9 @@ async def two_four_seven(interaction: discord.Interaction, channel: discord.Voic
     # activate the /247 function
     response = await musicController.two_four_seven(channel, interaction.channel)
     if response:
-        await interaction.response.send_message(f"Bot is currently in {response.channel.name}")
+        await interaction.response.send_message(f"Bot is currently in {response.channel.name}", ephemeral=True, delete_after=5)
     else:
-        await interaction.response.send_message(f"Enabling 24/7 Mode in {channel.name}")
+        await interaction.response.send_message(f"Enabling 24/7 Mode in {channel.name}", ephemeral=True, delete_after=5)
     logging.debug(f"/247 from {interaction.user.name} has ended")
     return
 
@@ -147,11 +147,8 @@ async def pause(interaction: discord.Interaction):
     # grab the music controller for designated guild
     musicController = await bot.getGuildMusicController(guild=interaction.guild)
     # call the /pause function
-    response = await musicController.pauseSong()
-    if response:
-        await interaction.response.send_message("Pausing the song.")
-    else:
-        await interaction.response.send_message("Resuming Playback.")
+    await musicController.pauseSong()
+    await interaction.response.defer()
     logging.debug(f"/pause from {interaction.user.name} has ended")
     return
 
@@ -164,7 +161,7 @@ async def resume(interaction: discord.Interaction):
     musicController = await bot.getGuildMusicController(guild=interaction.guild)
     # call the /resume function
     await musicController.resumeSong()
-    await interaction.response.send_message("Resuming Playback.")
+    await interaction.response.defer()
     logging.debug(f"/resume from {interaction.user.name} has ended")
     return
 
@@ -177,7 +174,7 @@ async def shuffle(interaction: discord.Interaction):
     musicController = await bot.getGuildMusicController(guild=interaction.guild)
     # call the /shuffle function
     await musicController.shuffleQueue()
-    await interaction.response.send_message("Queue has been shuffled.")
+    await interaction.response.send_message("Queue has been shuffled.", ephemeral=True, delete_after=5)
     logging.debug(f"/shuffle from {interaction.user.name} has ended")
     return
 
@@ -188,7 +185,7 @@ async def stop(interaction: discord.Interaction):
 
     # grab the music controller for designated guild
     musicController = await bot.getGuildMusicController(guild=interaction.guild)
-    await interaction.response.send_message("Stopping playback and clearing queue.")
+    await interaction.response.send_message("Stopping playback and clearing queue.", ephemeral=True, delete_after=5)
     # call the /stop function
     await musicController.stopAllSongs()
 
@@ -206,7 +203,7 @@ async def kick(interaction: discord.Interaction):
     await musicController.hardDisconnect()
     # pop the music Controller
     await bot.popGuildMusicController(guild=interaction.guild)
-    await interaction.response.send_message("Bot has been disconnected from the voice channel, and 24/7 has been disabled.")
+    await interaction.response.send_message("Bot has been disconnected from the voice channel, and 24/7 has been disabled.", ephemeral=True, delete_after=5)
     logging.debug(f"/dc from {interaction.user.name} has ended")
     return
 
@@ -217,7 +214,7 @@ async def skip(interaction: discord.Interaction):
 
     # grab the music controller for designated guild
     musicController = await bot.getGuildMusicController(guild=interaction.guild)
-    await interaction.response.send_message("Skipping song.")
+    await interaction.response.defer()
     # call the /skip function
     await musicController.skipSong()
     logging.debug(f"/skip from {interaction.user.name} has ended")
@@ -233,9 +230,9 @@ async def loop(interaction: discord.Interaction):
     # call the /loop function
     response = await musicController.setLooping()
     if response:
-        await interaction.response.send_message("Looping Enabled.")
+        await interaction.response.send_message("Looping Enabled.", ephemeral=True, delete_after=5)
     else:
-        await interaction.response.send_message("Looping Disabled.")
+        await interaction.response.send_message("Looping Disabled.", ephemeral=True, delete_after=5)
     logging.debug(f"/loop from {interaction.user.name} has ended")
     return
 
@@ -256,7 +253,7 @@ async def queue(interaction: discord.Interaction):
             color=0xA600FF,
         )
         embed.set_thumbnail(url=bot.user.avatar.url)
-        await interaction.response.send_message(embed=embed, ephemeral=True)
+        await interaction.response.send_message(embed=embed, ephemeral=True, delete_after=600)
         return
 
     # grab the QueueView Class
@@ -272,13 +269,13 @@ async def search(interaction: discord.Interaction, query: str):
     logging.info(f"{interaction.user.name} has activated /search")
 
     # send the initial discord message
-    await interaction.response.send_message(f"Searching Youtube: {query}", delete_after=3)
+    await interaction.response.send_message(f"Searching Youtube: {query}", ephemeral=True, delete_after=5)
     # grab the music controller for designated guild
     musicController = await bot.getGuildMusicController(guild=interaction.guild)
     # search for the query
     result = await musicController.searchSongs(query)
     if not result:
-        await interaction.channel.send("Failed to search youtube.")
+        await interaction.channel.send("Failed to search youtube.", ephemeral=True, delete_after=5)
         return
     # grab the SearchView Class
     view = SearchView(result, musicController, bot)
@@ -298,7 +295,7 @@ async def volume(interaction: discord.Interaction, volume: app_commands.Range[in
 
     # call the /volume function
     await musicController.setVolume(volume)
-    await interaction.response.send_message(f"Volume has been set to {volume}%")
+    await interaction.response.send_message(f"Volume has been set to {volume}%", ephemeral=True, delete_after=5)
     logging.debug(f"/volume from {interaction.user.name} has ended")
     return
 
@@ -322,7 +319,7 @@ async def help(interaction: discord.Interaction):
     embed.add_field(name="/Search", value="Searches for top 10 results of a song. Use this in case you can't find what you want.", inline=False)
     embed.add_field(name="/Volume", value="Sets the volume of the bot, between 0 and 200. 100 is the default.", inline=False)
     embed.set_thumbnail(url=bot.user.avatar.url)
-    await interaction.response.send_message(embed=embed)
+    await interaction.response.send_message(embed=embed, ephemeral=True, delete_after=600)
 
 
 if __name__ == "__main__":
