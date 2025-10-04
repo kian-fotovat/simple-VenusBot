@@ -7,7 +7,7 @@ class MusicButtons(discord.ui.View):
         self.tree = client.tree
         self.musicController = musicController
 
-    @discord.ui.button(label="▶️", style=discord.ButtonStyle.secondary, row=0)
+    @discord.ui.button(label="⏸️", style=discord.ButtonStyle.secondary, row=0)
     async def PauseResume_Button(self, interaction: discord.Interaction, Button: discord.ui.Button):
         response = await self.musicController.pauseSong()
         if response:
