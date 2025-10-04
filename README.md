@@ -46,14 +46,9 @@ DISCORD_TOKEN='YOUR_BOT_TOKEN_HERE'
 SPOTIFY_CLIENT_ID='YOUR_SPOTIFY_CLIENT_ID'
 SPOTIFY_CLIENT_SECRET='YOUR_SPOTIFY_CLIENT_SECRET'
 SPOTIFY_CLIENT_REFRESH_TOKEN='YOUR_SPOTIFY_REFRESH_TOKEN'
-OWNER=000000000000000000
 ```
 - Replace `YOUR_BOT_TOKEN_HERE` with your Discord Bot Token
 - Replace Spotify credentials with ones from the **[Spotify Developer Dashboard](https://developer.spotify.com/dashboard)**
-- OWNER should be your Discord user ID.
-> - To get it:
-> - Go to Discord Settings → Advanced → Enable Developer Mode
-> - Click your username → Click "Copy User ID"
 
 ### 🤖 Run the Bot
 ```bash
