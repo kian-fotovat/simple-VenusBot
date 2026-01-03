@@ -1,4 +1,4 @@
-# 🎶 Venus Bot - A Voice Activated 24/7 Discord Music Bot
+# 🎶 Venus Bot - A Discord Music Bot
 
 Venus Bot is a simple, yet powerful and customizable Discord music bot built with `discord.py`, capable of playing songs or playlists from YouTube, Spotify and SoundCloud. No fancy bullshit or e-kitten fluff, just a bot that plays music. Expect some minor bugs, I literally ripped everything I didn't want out, tested it for 10 minutes, and pushed it here.
 
